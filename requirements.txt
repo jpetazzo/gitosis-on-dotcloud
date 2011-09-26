@@ -1,0 +1,1 @@
+git+git://github.com/jpetazzo/gitosis.git#egg=gitosis

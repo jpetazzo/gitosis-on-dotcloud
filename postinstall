@@ -1,0 +1,18 @@
+#!/bin/sh
+[ -d /home/dotcloud/data ] || {
+    mkdir -p /home/dotcloud/data
+    ssh-keygen -f /home/dotcloud/data/id_rsa -N ''
+    gitosis-init < /home/dotcloud/data/id_rsa.pub
+    mv /home/dotcloud/repositories /home/dotcloud/data/repositories
+    ln -s /home/dotcloud/data/repositories /home/dotcloud/repositories
+    mv /home/dotcloud/gitosis /home/dotcloud/data/gitosis
+    ln -s /home/dotcloud/data/gitosis /home/dotcloud/gitosis
+    APPNAME=$(grep DOTCLOUD_PROJECT /home/dotcloud/environment.json | 
+	cut -d\" -f4)
+    SVCNAME=$(grep DOTCLOUD_SERVICE_NAME /home/dotcloud/environment.json | 
+	cut -d\" -f4)
+}
+echo "*******************************************************************"
+echo "To retrieve the SSH private key for your gitosis service, run:"
+echo "dotcloud run $APPNAME.$SVCNAME cat /home/dotcloud/data/id_rsa"
+echo "*******************************************************************"
